@@ -10,14 +10,14 @@ const Hero = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-12">
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden hidden md:block">
         <div className="absolute top-20 left-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse"></div>
         <div className="absolute top-40 right-32 w-1 h-1 bg-[#39FF14] rounded-full animate-pulse delay-1000"></div>
         <div className="absolute bottom-32 left-28 w-1.5 h-1.5 bg-[#FF6B35] rounded-full animate-pulse delay-500"></div>
         <div className="absolute bottom-20 right-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse delay-700"></div>
       </div>
 
-      <div className="container mx-auto px-6 text-center relative z-10">
+      <div className="container mx-auto px-6 text-center relative z-10 mt-10 md:mt-0">
         <h1 className="text-6xl md:text-7xl font-bold mb-6">
           <span className="text-white">Never Miss Another</span>
           <br />
