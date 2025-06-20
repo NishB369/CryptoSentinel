@@ -5,6 +5,7 @@ import ComparisonTable from "../Components/ComparisonTable";
 import FeaturesGrid from "../Components/FeaturesGrid";
 import HowItWorks from "../Components/HowItWorks";
 import SocialProof from "../Components/SocialProof";
+import CTASection from "../Components/CTASection";
 
 export const LandingPage = () => {
   return (
@@ -15,6 +16,7 @@ export const LandingPage = () => {
       <FeaturesGrid />
       <HowItWorks />
       <SocialProof />
+      <CTASection />
     </>
   );
 };
