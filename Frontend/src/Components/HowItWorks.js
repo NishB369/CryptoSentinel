@@ -36,20 +36,21 @@ const HowItWorks = () => {
           {steps.map((step, index) => (
             <div key={index} className="text-center relative">
               <div className="relative z-10">
-                <div className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] rounded-full w-32 h-32 flex items-center justify-center mx-auto mb-6 text-5xl hover:scale-110 transition-transform duration-300">
+                <div className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] rounded-full w-20 h-20 md:w-32 md:h-32 flex items-center justify-center mx-auto mb-6 text-3xl md:text-5xl hover:scale-110 transition-transform duration-300">
                   {step.icon}
                 </div>
 
-                <div className="flex items-end gap-2 justify-center">
-                  <div className="text-[#00D2FF] text-6xl font-bold mb-4 opacity-75">
+                <div className="flex items-end gap-1 md:gap-2 justify-center">
+                  <div className="text-[#00D2FF] text-3xl md:text-6xl font-bold mb-4 opacity-75">
                     {step.number}
                   </div>
 
-                  <h3 className="text-white font-bold text-3xl mb-4">
+                  <h3 className="text-white font-bold text-2xl md:text-3xl mb-4">
                     {step.title}
                   </h3>
                 </div>
-                <p className="text-gray-300 text-md max-w-sm mx-auto leading-tight w-2/3">
+
+                <p className="text-gray-300 text-md max-w-sm mx-auto leading-tight w-2/3 -mt-2">
                   {step.description}
                 </p>
               </div>
