@@ -36,7 +36,7 @@ const CTASection = () => {
                 onClick={handleStartFree}
                 className="w-full sm:w-auto bg-gradient-to-r from-[#00D2FF] to-[#39FF14] text-black font-bold px-8 md:px-12 py-3 md:py-3 text-base md:text-xl hover:scale-105 transition-transform duration-200 shadow-lg shadow-[#00D2FF]/25 cursor-pointer rounded-full ease-in-out min-w-0"
               >
-                Start Free Monitoring
+                Start Onboarding
               </button>
               <button className="w-full sm:w-auto border-2 border-[#00D2FF] text-[#00D2FF] hover:bg-[#00D2FF] hover:text-black px-8 md:px-12 py-3 md:py-3 text-base md:text-xl transition-all duration-200 cursor-pointer rounded-full ease-in-out min-w-0">
                 View Live Demo

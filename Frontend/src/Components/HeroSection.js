@@ -9,7 +9,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-12">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-12 px-6">
       <div className="absolute inset-0 overflow-hidden hidden md:block">
         <div className="absolute top-20 left-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse"></div>
         <div className="absolute top-40 right-32 w-1 h-1 bg-[#39FF14] rounded-full animate-pulse delay-1000"></div>
@@ -18,7 +18,7 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-6 text-center relative z-10 mt-10 md:mt-0">
-        <h1 className="text-6xl md:text-7xl font-bold mb-6">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6">
           <span className="text-white">Never Miss Another</span>
           <br />
           <span className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] bg-clip-text text-transparent">
@@ -31,7 +31,7 @@ const Hero = () => {
           and AI-driven insights.
         </p>
 
-        <div className="flex flex-col md:flex-row gap-6 justify-center mb-10">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center mb-10">
           <button
             onClick={handleStartFree}
             className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] text-black font-semibold px-12 py-4 text-lg hover:scale-105 transition-transform duration-200 rounded-full cursor-pointer"

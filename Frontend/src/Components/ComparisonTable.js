@@ -158,7 +158,7 @@ const ComparisonTable = () => {
               className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] text-black font-bold px-8 py-4 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-[#00D2FF]/25  rounded-full cursor-pointer"
               onClick={handleStartFree}
             >
-              Start Free Monitoring →
+              Get Your Dashboard →
             </button>
           </div>
         </div>
