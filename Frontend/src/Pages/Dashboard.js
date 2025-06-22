@@ -198,7 +198,7 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-6 py-8">
         {/* Market Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8">
           <div className="bg-gradient-to-br from-[#1A1A1A]/80 to-[#2A2A2A]/60 backdrop-blur-sm border border-[#333]/50 rounded-xl p-6 hover:border-[#39FF14]/30 transition-all">
             <p className="text-gray-400 text-sm">Total Market Cap</p>
             <p className="text-2xl font-bold text-[#39FF14]">

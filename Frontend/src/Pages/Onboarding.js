@@ -231,28 +231,10 @@ const Onboarding = () => {
     }
   };
 
-  const LoadingSpinner = () => (
-    <div className="flex items-center justify-center">
-      <div className="relative">
-        <div className="w-16 h-16 border-4 border-[#2A2A2A] rounded-full"></div>
-        <div className="absolute top-0 left-0 w-16 h-16 border-4 border-[#00D2FF] border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    </div>
-  );
-
-  const LoadingBar = ({ progress }) => (
-    <div className="w-full bg-[#2A2A2A] rounded-full h-2 mb-4">
-      <div
-        className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] h-2 rounded-full transition-all duration-300"
-        style={{ width: `${progress}%` }}
-      />
-    </div>
-  );
-
   // Hold animation component
   const HoldAnimation = () => (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0A0A] to-[#1A1A1A] flex items-center justify-center px-6">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center text-center">
         <div className="relative mb-8">
           <div className="w-24 h-24 border-4 border-[#2A2A2A] rounded-full"></div>
           <div className="absolute top-0 left-0 w-24 h-24 border-4 border-[#00D2FF] border-t-transparent rounded-full animate-spin"></div>
@@ -286,19 +268,9 @@ const Onboarding = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0A0A0A] to-[#1A1A1A] flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#0A0A0A] to-[#1A1A1A] flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-4xl">
-        {/* Logout button in top right */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-red-400 hover:text-red-300 transition-colors duration-200 text-sm"
-          >
-            Logout
-          </button>
-        </div>
-
-        <div className="bg-[#1A1A1A]/60 backdrop-blur-sm border border-[#333]/50 rounded-2xl p-8">
+        <div className="bg-[#1A1A1A]/60 backdrop-blur-sm border border-[#333]/50 rounded-2xl p-8 px-4">
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <span className="text-white font-semibold">Step {step} of 2</span>
@@ -370,32 +342,32 @@ const Onboarding = () => {
                 Here are the cryptocurrencies we're currently monitoring for you
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {liveTokens.map((token, index) => (
                   <div
                     key={token.id}
-                    className="p-6 py-4 rounded-xl border border-[#333] bg-[#1A1A1A]/50 hover:border-[#555] transition-all duration-300 hover:scale-105 animate-fade-in-up"
+                    className="p-3 rounded-xl border border-[#333] bg-[#1A1A1A]/50 hover:border-[#555] transition-all duration-300 hover:scale-105 animate-fade-in-up"
                     style={{
                       animationDelay: `${index * 0.1}s`,
                     }}
                   >
                     <div className="text-center">
                       <div className="flex justify-between items-start mb-2">
-                        <div className="text-left">
-                          <div className="text-white font-bold text-lg">
+                        <div className="text-left min-w-0 flex-1">
+                          <div className="text-white font-bold text-base truncate">
                             {token.symbol}
                           </div>
-                          <div className="text-gray-400 text-sm">
+                          <div className="text-gray-400 text-xs truncate">
                             {token.name}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-[#39FF14] text-lg font-bold">
+                        <div className="text-right ml-2 flex-shrink-0">
+                          <div className="text-[#39FF14] text-sm font-bold">
                             {token.price}
                           </div>
                           {token.change24h && (
                             <div
-                              className={`text-sm font-medium ${
+                              className={`text-xs font-medium ${
                                 token.change24h >= 0
                                   ? "text-green-400"
                                   : "text-red-400"
@@ -408,8 +380,8 @@ const Onboarding = () => {
                         </div>
                       </div>
                       {token.marketCap && (
-                        <div className="text-gray-500 text-xs mt-2 pt-2 border-t border-[#333]/50">
-                          Market Cap: {token.marketCap}
+                        <div className="text-gray-500 text-xs mt-2 pt-2 border-t border-[#333]/50 truncate">
+                          Cap: {token.marketCap}
                         </div>
                       )}
                     </div>
