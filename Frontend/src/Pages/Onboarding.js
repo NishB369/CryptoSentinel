@@ -11,6 +11,38 @@ const Onboarding = () => {
   const [apiDataReady, setApiDataReady] = useState(false);
   const navigate = useNavigate();
 
+  // Check authentication and onboarding status on component mount
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    const onboardingComplete = localStorage.getItem("onboardingComplete");
+
+    // If not authenticated, redirect to login
+    if (isAuthenticated !== "true") {
+      navigate("/login");
+      return;
+    }
+
+    // If already onboarded, redirect to dashboard
+    if (onboardingComplete === "true") {
+      navigate("/dashboard");
+      return;
+    }
+
+    // If authenticated but not onboarded, load saved name if exists
+    const savedName = localStorage.getItem("userName");
+    if (savedName) {
+      setName(savedName);
+    }
+  }, [navigate]);
+
+  // Logout function to clear localStorage and redirect
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("onboardingComplete");
+    localStorage.removeItem("userName");
+    navigate("/");
+  };
+
   // Fetch live token data from your server
   const fetchLiveTokens = async () => {
     try {
@@ -183,8 +215,7 @@ const Onboarding = () => {
       localStorage.setItem("onboardingComplete", "true");
       localStorage.setItem("userName", name);
 
-      // Save to React state instead of localStorage
-      // You can pass this data to your main app component
+      // Navigate to dashboard
       navigate("/dashboard", { state: userPrefs });
     }
   };
@@ -257,6 +288,16 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0A0A] to-[#1A1A1A] flex items-center justify-center px-6">
       <div className="w-full max-w-4xl">
+        {/* Logout button in top right */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-red-400 hover:text-red-300 transition-colors duration-200 text-sm"
+          >
+            Logout
+          </button>
+        </div>
+
         <div className="bg-[#1A1A1A]/60 backdrop-blur-sm border border-[#333]/50 rounded-2xl p-8">
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">

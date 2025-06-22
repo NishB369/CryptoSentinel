@@ -252,7 +252,7 @@ const OllamaInsights = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    // navigate("/dashboard"); // Uncomment if using react-router
+    navigate("/dashboard");
   };
 
   if (dataLoading) {

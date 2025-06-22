@@ -1,11 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  // Check if user is already authenticated on component mount
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    if (isAuthenticated === "true") {
+      navigate("/onboarding");
+    }
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
