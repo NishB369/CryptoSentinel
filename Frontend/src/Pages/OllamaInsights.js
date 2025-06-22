@@ -6,20 +6,28 @@ import {
   Zap,
   AlertCircle,
   ChevronDown,
+  Bot,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Clock,
+  Target,
+  BarChart3,
+  Lightbulb,
+  Activity,
 } from "lucide-react";
 import InternalNavbar from "../Components/InternalNavbar";
 
 const OllamaInsights = () => {
   const [userName, setUserName] = useState("");
   const [lastUpdated, setLastUpdated] = useState(null);
-
   const [cryptoPrices, setCryptoPrices] = useState({});
   const [cryptoNews, setCryptoNews] = useState([]);
   const [selectedCoin, setSelectedCoin] = useState("");
   const [selectedNews, setSelectedNews] = useState("");
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState("idle"); // NEW: 'idle' | 'sending' | 'parsing' | 'understanding' | 'done'
+  const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState("");
   const [dataLoading, setDataLoading] = useState(true);
 
@@ -31,6 +39,13 @@ const OllamaInsights = () => {
     { id: "polkadot", symbol: "DOT", name: "Polkadot" },
     { id: "chainlink", symbol: "LINK", name: "Chainlink" },
     { id: "avalanche-2", symbol: "AVAX", name: "Avalanche" },
+  ];
+
+  const analysisSteps = [
+    { label: "Sending to AI...", shortLabel: "Sending" },
+    { label: "Parsing response...", shortLabel: "Parsing" },
+    { label: "Understanding...", shortLabel: "Analysis" },
+    { label: "Complete", shortLabel: "Done" },
   ];
 
   useEffect(() => {
@@ -73,13 +88,11 @@ const OllamaInsights = () => {
     }
 
     setLoading(true);
-    setStep("sending");
+    setCurrentStep(0);
     setError("");
     setAnalysis(null);
 
     try {
-      await new Promise((r) => setTimeout(r, 1000));
-
       const coinData = cryptoPrices[selectedCoin];
       const newsData = cryptoNews[parseInt(selectedNews)];
 
@@ -87,11 +100,13 @@ const OllamaInsights = () => {
         throw new Error("Selected data not found");
       }
 
+      // Step 1: Sending
+      await new Promise((r) => setTimeout(r, 1000));
+      setCurrentStep(1);
+
       const response = await fetch("http://localhost:3001/analyze-selection", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           coin: {
             id: selectedCoin,
@@ -112,8 +127,9 @@ const OllamaInsights = () => {
         }),
       });
 
-      setStep("parsing");
+      // Step 2: Parsing
       await new Promise((r) => setTimeout(r, 1000));
+      setCurrentStep(2);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -123,62 +139,127 @@ const OllamaInsights = () => {
       }
 
       const result = await response.json();
-      setStep("understanding");
+
+      // Step 3: Understanding
       await new Promise((r) => setTimeout(r, 1000));
+      setCurrentStep(3);
 
       setAnalysis(result);
-      setStep("done");
     } catch (err) {
       setError("Analysis failed: " + err.message);
-      setStep("idle");
     } finally {
       setLoading(false);
+      setCurrentStep(0);
     }
   };
 
-  const StepIndicator = ({ current }) => {
-    const steps = [
-      { key: "sending", label: "Sending to AI..." },
-      { key: "parsing", label: "Parsing response..." },
-      { key: "understanding", label: "Understanding..." },
-      { key: "done", label: "Complete" },
-    ];
+  const StepIndicator = () => (
+    <div className="mt-6 px-4">
+      {/* Mobile Layout */}
+      <div className="block md:hidden">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-full max-w-xs bg-gray-700 rounded-full h-2">
+            <div
+              className="bg-gradient-to-r from-[#00D2FF] to-[#39FF14] h-2 rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${(currentStep / analysisSteps.length) * 100}%`,
+              }}
+            />
+          </div>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="w-3 h-3 bg-[#00D2FF] rounded-full animate-pulse" />
+              <span className="text-white font-medium">
+                {analysisSteps[currentStep]?.shortLabel || "Processing"}
+              </span>
+            </div>
+            <div className="text-xs text-gray-400">
+              Step {currentStep + 1} of {analysisSteps.length}
+            </div>
+          </div>
+        </div>
+      </div>
 
-    return (
-      <div className="flex justify-center items-center gap-4 mt-4 text-white">
-        {steps.map((stepItem, idx) => {
-          const isActive = steps.findIndex((s) => s.key === current) >= idx;
+      {/* Desktop Layout */}
+      <div className="hidden md:flex justify-center items-center gap-4 text-white">
+        {analysisSteps.map((step, idx) => {
+          const isActive = currentStep >= idx;
+          const isCurrent = currentStep === idx;
+
           return (
-            <div key={stepItem.key} className="flex items-center gap-2">
+            <div key={idx} className="flex items-center gap-2">
               <div
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  isActive ? "bg-[#00D2FF]" : "bg-gray-500"
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  isActive
+                    ? isCurrent
+                      ? "bg-[#00D2FF] animate-pulse scale-110"
+                      : "bg-[#39FF14]"
+                    : "bg-gray-500"
                 }`}
-              ></div>
+              />
               <span
-                className={`text-sm ${
-                  current === stepItem.key ? "text-white" : "text-gray-400"
+                className={`text-sm transition-colors duration-300 ${
+                  isCurrent
+                    ? "text-white font-medium"
+                    : isActive
+                    ? "text-gray-300"
+                    : "text-gray-500"
                 }`}
               >
-                {stepItem.label}
+                {step.label}
               </span>
+              {idx < analysisSteps.length - 1 && (
+                <div
+                  className={`w-8 h-0.5 mx-2 transition-colors duration-300 ${
+                    currentStep > idx ? "bg-[#39FF14]" : "bg-gray-600"
+                  }`}
+                />
+              )}
             </div>
           );
         })}
       </div>
-    );
+    </div>
+  );
+
+  const getSentimentIcon = (sentiment) => {
+    if (!sentiment) return <Minus className="w-6 h-6" />;
+    const lower = sentiment.toLowerCase();
+    if (lower.includes("bullish") || lower.includes("positive")) {
+      return <TrendingUp className="w-6 h-6 text-green-400" />;
+    } else if (lower.includes("bearish") || lower.includes("negative")) {
+      return <TrendingDown className="w-6 h-6 text-red-400" />;
+    }
+    return <Minus className="w-6 h-6 text-yellow-400" />;
+  };
+
+  const getSignalColor = (signal) => {
+    if (!signal) return "text-gray-400";
+    const lower = signal.toLowerCase();
+    if (lower.includes("buy") || lower.includes("long"))
+      return "text-green-400";
+    if (lower.includes("sell") || lower.includes("short"))
+      return "text-red-400";
+    return "text-yellow-400";
+  };
+
+  const getConfidenceColor = (confidence) => {
+    if (!confidence) return "text-gray-400";
+    if (confidence >= 0.8) return "text-green-400";
+    if (confidence >= 0.6) return "text-yellow-400";
+    return "text-red-400";
   };
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/dashboard");
+    // navigate("/dashboard"); // Uncomment if using react-router
   };
 
   if (dataLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4" />
           <p className="text-xl">Loading crypto data...</p>
         </div>
       </div>
@@ -186,13 +267,13 @@ const OllamaInsights = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden pb-10">
       {/* Background Dots */}
       <div className="absolute inset-0 hidden md:block z-0 overflow-hidden">
-        <div className="absolute top-30 left-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse"></div>
-        <div className="absolute top-40 right-32 w-1 h-1 bg-[#39FF14] rounded-full animate-pulse delay-1000"></div>
-        <div className="absolute bottom-32 left-28 w-1.5 h-1.5 bg-[#FF6B35] rounded-full animate-pulse delay-500"></div>
-        <div className="absolute bottom-20 right-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse delay-700"></div>
+        <div className="absolute top-30 left-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse" />
+        <div className="absolute top-40 right-32 w-1 h-1 bg-[#39FF14] rounded-full animate-pulse delay-1000" />
+        <div className="absolute bottom-32 left-28 w-1.5 h-1.5 bg-[#FF6B35] rounded-full animate-pulse delay-500" />
+        <div className="absolute bottom-20 right-20 w-2 h-2 bg-[#00D2FF] rounded-full animate-pulse delay-700" />
       </div>
 
       <InternalNavbar
@@ -284,8 +365,7 @@ const OllamaInsights = () => {
               </div>
             </button>
 
-            {/* Stepwise Indicator */}
-            {loading && <StepIndicator current={step} />}
+            {loading && <StepIndicator />}
           </div>
         </div>
 
@@ -297,66 +377,147 @@ const OllamaInsights = () => {
         )}
 
         {analysis && (
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 space-y-6 text-white">
-            <h2 className="text-2xl font-semibold flex items-center gap-2">
-              <Brain className="w-6 h-6" />
-              AI Analysis Results
-            </h2>
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 space-y-8 text-white mx-6">
+            {/* Header */}
+            <div className="text-center border-b border-white/20 pb-6">
+              <h2 className="text-3xl font-bold flex items-center justify-center gap-3 mb-2">
+                <Bot className="w-8 h-8 text-[#00D2FF] hidden md:block" />
+                AI Analysis Results
+              </h2>
+              <p className="text-gray-300">
+                Comprehensive analysis of{" "}
+                {availableCoins.find((c) => c.id === selectedCoin)?.symbol}{" "}
+                market sentiment and trading signals
+              </p>
+            </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white/10 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Market Sentiment</h3>
-                <div className="text-2xl font-bold">
-                  {analysis.marketSentiment || "N/A"}
+            {/* Main Metrics */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Market Sentiment */}
+              <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:from-white/20 hover:to-white/10 transition-all duration-300">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-200">
+                    Market Sentiment
+                  </h3>
+                  {getSentimentIcon(analysis.marketSentiment)}
                 </div>
-                <p className="text-sm text-gray-300">
-                  Confidence:{" "}
-                  {analysis.confidence
-                    ? `${Math.round(analysis.confidence * 100)}%`
-                    : "N/A"}
+                <div className="text-3xl font-bold mb-2">
+                  {analysis.marketSentiment || "Analyzing..."}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-gray-400" />
+                  <span
+                    className={`text-sm font-medium ${getConfidenceColor(
+                      analysis.confidence
+                    )}`}
+                  >
+                    {analysis.confidence
+                      ? `${Math.round(analysis.confidence * 100)}% Confidence`
+                      : "Processing..."}
+                  </span>
+                </div>
+              </div>
+
+              {/* Trading Signal */}
+              <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:from-white/20 hover:to-white/10 transition-all duration-300">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-200">
+                    Trading Signal
+                  </h3>
+                  <Target className="w-6 h-6 text-[#39FF14]" />
+                </div>
+                <div
+                  className={`text-3xl font-bold mb-2 ${getSignalColor(
+                    analysis.tradingSignal
+                  )}`}
+                >
+                  {analysis.tradingSignal || "Calculating..."}
+                </div>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  {analysis.signalReason || "Analyzing market conditions..."}
                 </p>
               </div>
 
-              <div className="bg-white/10 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Trading Signal</h3>
-                <div className="text-2xl font-bold">
-                  {analysis.tradingSignal || "N/A"}
+              {/* Analysis Metadata */}
+              <div className="bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-sm border border-white/30 rounded-xl p-6 hover:from-white/20 hover:to-white/10 transition-all duration-300">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-200">
+                    Analysis Info
+                  </h3>
+                  <BarChart3 className="w-6 h-6 text-[#FF6B35]" />
                 </div>
-                <p className="text-sm text-gray-300">
-                  {analysis.signalReason || "Processing..."}
-                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm">
+                      {analysis.timestamp
+                        ? new Date(analysis.timestamp).toLocaleTimeString()
+                        : "Processing..."}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Bot className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm">
+                      {analysis.model || "AI Assistant"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm">
+                      {availableCoins.find((c) => c.id === selectedCoin)?.name}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* News Impact Analysis */}
             {analysis.newsImpact && (
-              <div className="bg-white/10 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">News Impact</h3>
-                <p>{analysis.newsImpact}</p>
+              <div className="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm border border-white/30 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Newspaper className="w-6 h-6 text-[#00D2FF]" />
+                  <h3 className="text-xl font-semibold">
+                    News Impact Analysis
+                  </h3>
+                </div>
+                <div className="bg-white/5 rounded-lg p-4 border-l-4 border-[#00D2FF]">
+                  <p className="text-gray-100 leading-relaxed">
+                    {analysis.newsImpact}
+                  </p>
+                </div>
               </div>
             )}
 
+            {/* Key Insights */}
             {analysis.keyInsights?.length > 0 && (
-              <div className="bg-white/10 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Key Insights</h3>
-                <ul className="list-disc list-inside space-y-2">
+              <div className="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm border border-white/30 rounded-xl p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Lightbulb className="w-6 h-6 text-[#39FF14]" />
+                  <h3 className="text-xl font-semibold">Key Insights</h3>
+                </div>
+                <div className="grid gap-4">
                   {analysis.keyInsights.map((insight, idx) => (
-                    <li key={idx}>{insight}</li>
+                    <div
+                      key={idx}
+                      className="flex items-start gap-3 bg-white/5 rounded-lg p-4 border border-white/20"
+                    >
+                      <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-[#00D2FF] to-[#39FF14] rounded-full flex items-center justify-center text-black font-bold text-sm">
+                        {idx + 1}
+                      </div>
+                      <p className="text-gray-100 leading-relaxed">{insight}</p>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
-            <div className="text-sm text-gray-400 text-center">
-              <div className="flex justify-center gap-4">
-                <span>
-                  Analysis Time:{" "}
-                  {analysis.timestamp
-                    ? new Date(analysis.timestamp).toLocaleTimeString()
-                    : "N/A"}
-                </span>
-                <span>•</span>
-                <span>Model: {analysis.model || "AI Assistant"}</span>
-              </div>
+            {/* Analysis Footer */}
+            <div className="text-center pt-6 border-t border-white/20">
+              <p className="text-sm text-gray-400">
+                This analysis is generated by AI and should not be considered as
+                financial advice. Always do your own research before making
+                investment decisions.
+              </p>
             </div>
           </div>
         )}
