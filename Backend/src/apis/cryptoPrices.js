@@ -9,7 +9,7 @@ export async function fetchCryptoPrices() {
     }
 
     const data = await response.json();
-    console.log('🔍 API Response received for coins:', Object.keys(data));
+    // console.log('🔍 API Response received for coins:', Object.keys(data));
 
     const getCoinData = (coinData) => {
       if (coinData && typeof coinData === 'object') {

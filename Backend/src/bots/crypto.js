@@ -65,105 +65,89 @@ async function run() {
     });
 
     // Cmd Logs to Track
-    console.log('🚀 Crypto Market Update:');
-    console.log('═'.repeat(80));
+    // console.log('🚀 Crypto Market Update:');
+    // console.log('═'.repeat(80));
 
-    const coins = [
-      { symbol: 'BTC', name: 'bitcoin', data: prices.bitcoin, fullName: 'Bitcoin' },
-      { symbol: 'ETH', name: 'ethereum', data: prices.ethereum, fullName: 'Ethereum' },
-      { symbol: 'SOL', name: 'solana', data: prices.solana, fullName: 'Solana' },
-      { symbol: 'ADA', name: 'cardano', data: prices.cardano, fullName: 'Cardano' },
-      { symbol: 'DOT', name: 'polkadot', data: prices.polkadot, fullName: 'Polkadot' },
-      { symbol: 'LINK', name: 'chainlink', data: prices.chainlink, fullName: 'Chainlink' },
-      { symbol: 'AVAX', name: 'avalanche', data: prices.avalanche, fullName: 'Avalanche' },
-    ];
+    // const coins = [
+    //   { symbol: 'BTC', name: 'bitcoin', data: prices.bitcoin, fullName: 'Bitcoin' },
+    //   { symbol: 'ETH', name: 'ethereum', data: prices.ethereum, fullName: 'Ethereum' },
+    //   { symbol: 'SOL', name: 'solana', data: prices.solana, fullName: 'Solana' },
+    //   { symbol: 'ADA', name: 'cardano', data: prices.cardano, fullName: 'Cardano' },
+    //   { symbol: 'DOT', name: 'polkadot', data: prices.polkadot, fullName: 'Polkadot' },
+    //   { symbol: 'LINK', name: 'chainlink', data: prices.chainlink, fullName: 'Chainlink' },
+    //   { symbol: 'AVAX', name: 'avalanche', data: prices.avalanche, fullName: 'Avalanche' },
+    // ];
 
-    coins.forEach((coin, index) => {
-      if (coin.data && coin.data.usd && coin.data.inr) {
-        const { usd, inr, usd_24h_change, usd_market_cap, usd_24h_vol } = coin.data;
+    // coins.forEach((coin, index) => {
+    //   if (coin.data && coin.data.usd && coin.data.inr) {
+    //     const { usd, inr, usd_24h_change, usd_market_cap, usd_24h_vol } = coin.data;
 
-        console.log(`\n${index + 1}. ${coin.fullName} (${coin.symbol})`);
-        console.log(`   💰 Price: ${formatPrice(usd, inr)}`);
-        console.log(`   📊 24h Change: ${formatPercentage(usd_24h_change)}`);
-        console.log(`   🏪 Market Cap: ${formatLargeNumber(usd_market_cap)}`);
-        console.log(`   📈 24h Volume: ${formatLargeNumber(usd_24h_vol)}`);
+    //     console.log(`\n${index + 1}. ${coin.fullName} (${coin.symbol})`);
+    //     console.log(`   💰 Price: ${formatPrice(usd, inr)}`);
+    //     console.log(`   📊 24h Change: ${formatPercentage(usd_24h_change)}`);
+    //     console.log(`   🏪 Market Cap: ${formatLargeNumber(usd_market_cap)}`);
+    //     console.log(`   📈 24h Volume: ${formatLargeNumber(usd_24h_vol)}`);
 
-        const changeIndicator = usd_24h_change >= 0 ? '🟢' : '🔴';
-        console.log(`   ${changeIndicator} Status: ${usd_24h_change >= 0 ? 'Bullish' : 'Bearish'}`);
-      } else {
-        console.log(`\n${index + 1}. ${coin.fullName} (${coin.symbol})`);
-        console.log(`   ❌ Data not available`);
-      }
-    });
+    //     const changeIndicator = usd_24h_change >= 0 ? '🟢' : '🔴';
+    //     console.log(`   ${changeIndicator} Status: ${usd_24h_change >= 0 ? 'Bullish' : 'Bearish'}`);
+    //   } else {
+    //     console.log(`\n${index + 1}. ${coin.fullName} (${coin.symbol})`);
+    //     console.log(`   ❌ Data not available`);
+    //   }
+    // });
 
-    // Market summary
-    console.log('\n' + '═'.repeat(80));
-    console.log('📊 MARKET SUMMARY');
-    console.log('─'.repeat(40));
+    // // Market summary
+    // console.log('\n' + '═'.repeat(80));
+    // console.log('📊 MARKET SUMMARY');
+    // console.log('─'.repeat(40));
 
-    let totalMarketCap = 0;
-    let totalVolume = 0;
-    let gainers = 0;
-    let losers = 0;
+    // let totalMarketCap = 0;
+    // let totalVolume = 0;
+    // let gainers = 0;
+    // let losers = 0;
 
-    coins.forEach((coin) => {
-      if (
-        coin.data &&
-        coin.data.usd_market_cap &&
-        coin.data.usd_24h_vol &&
-        coin.data.usd_24h_change !== null
-      ) {
-        totalMarketCap += coin.data.usd_market_cap;
-        totalVolume += coin.data.usd_24h_vol;
+    // coins.forEach((coin) => {
+    //   if (
+    //     coin.data &&
+    //     coin.data.usd_market_cap &&
+    //     coin.data.usd_24h_vol &&
+    //     coin.data.usd_24h_change !== null
+    //   ) {
+    //     totalMarketCap += coin.data.usd_market_cap;
+    //     totalVolume += coin.data.usd_24h_vol;
 
-        if (coin.data.usd_24h_change > 0) {
-          gainers++;
-        } else if (coin.data.usd_24h_change < 0) {
-          losers++;
-        }
-      }
-    });
+    //     if (coin.data.usd_24h_change > 0) {
+    //       gainers++;
+    //     } else if (coin.data.usd_24h_change < 0) {
+    //       losers++;
+    //     }
+    //   }
+    // });
 
-    console.log(`🏪 Total Market Cap: ${formatLargeNumber(totalMarketCap)}`);
-    console.log(`📈 Total 24h Volume: ${formatLargeNumber(totalVolume)}`);
-    console.log(
-      `🟢 Gainers: ${gainers} | 🔴 Losers: ${losers} | ⚪ Neutral: ${7 - gainers - losers}`,
-    );
+    // console.log(`🏪 Total Market Cap: ${formatLargeNumber(totalMarketCap)}`);
+    // console.log(`📈 Total 24h Volume: ${formatLargeNumber(totalVolume)}`);
+    // console.log(
+    //   `🟢 Gainers: ${gainers} | 🔴 Losers: ${losers} | ⚪ Neutral: ${7 - gainers - losers}`,
+    // );
 
-    // Market sentiment
-    const bullishRatio = gainers / 7;
-    let sentiment = '';
-    if (bullishRatio >= 0.7) {
-      sentiment = '🚀 Very Bullish';
-    } else if (bullishRatio >= 0.5) {
-      sentiment = '📈 Bullish';
-    } else if (bullishRatio >= 0.3) {
-      sentiment = '⚖️ Mixed';
-    } else {
-      sentiment = '📉 Bearish';
-    }
+    // // Market sentiment
+    // const bullishRatio = gainers / 7;
+    // let sentiment = '';
+    // if (bullishRatio >= 0.7) {
+    //   sentiment = '🚀 Very Bullish';
+    // } else if (bullishRatio >= 0.5) {
+    //   sentiment = '📈 Bullish';
+    // } else if (bullishRatio >= 0.3) {
+    //   sentiment = '⚖️ Mixed';
+    // } else {
+    //   sentiment = '📉 Bearish';
+    // }
 
-    console.log(`🎯 Market Sentiment: ${sentiment}`);
-    console.log(
-      `⏰ Updated: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST`,
-    );
-    console.log('═'.repeat(80));
-
-    // Log detailed data for debugging
-    filelog(`CRYPTO_MARKET_UPDATE_${Date.now()}`, {
-      timestamp: new Date().toISOString(),
-      totalMarketCap,
-      totalVolume,
-      gainers,
-      losers,
-      sentiment,
-      prices: coins.map((coin) => ({
-        symbol: coin.symbol,
-        price_usd: coin.data?.usd,
-        change_24h: coin.data?.usd_24h_change,
-        market_cap: coin.data?.usd_market_cap,
-      })),
-    });
+    // console.log(`🎯 Market Sentiment: ${sentiment}`);
+    // console.log(
+    //   `⏰ Updated: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST`,
+    // );
+    // console.log('═'.repeat(80));
   } else {
     console.log('❌ Failed to fetch crypto prices');
     filelog('CRYPTO_FETCH_ERROR', { timestamp: new Date().toISOString() });

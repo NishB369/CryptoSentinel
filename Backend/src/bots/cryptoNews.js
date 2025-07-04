@@ -26,10 +26,10 @@ async function run() {
       payload: newsItems,
     });
 
-    console.log('Top 3 Crypto News:');
-    newsItems.slice(0, 3).forEach((item, idx) => {
-      console.log(`\n${idx + 1}. ${item.title}\n${item.link}\n${item.published}`);
-    });
+    // console.log('Top 3 Crypto News:');
+    // newsItems.slice(0, 3).forEach((item, idx) => {
+    //   console.log(`\n${idx + 1}. ${item.title}\n${item.link}\n${item.published}`);
+    // });
   }
 
   await sleep(60000);
