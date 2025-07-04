@@ -24,7 +24,7 @@ async function run() {
   filelog('BOT_APP_RESTING');
   await sleep(workWaitMs);
   filelog('BOT_APP_WORKING');
-  await sleep(5000); // work for 5 sec
+  await sleep(5000);
 
   run();
 }
