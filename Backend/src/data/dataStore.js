@@ -14,21 +14,18 @@ export function updateCryptoPrices(data) {
   dataStore.cryptoPrices = data;
   dataStore.systemStatus.cryptoBot.lastUpdate = new Date().toISOString();
   dataStore.systemStatus.cryptoBot.status = 'active';
-  addToHistory('cryptoPrices', data);
 }
 
 export function updateCryptoNews(data) {
   dataStore.cryptoNews = data;
   dataStore.systemStatus.newsBot.lastUpdate = new Date().toISOString();
   dataStore.systemStatus.newsBot.status = 'active';
-  addToHistory('cryptoNews', data);
 }
 
 export function updateOllamaAnalysis(data) {
   dataStore.ollamaAnalysis = data;
   dataStore.systemStatus.ollamaBot.lastUpdate = new Date().toISOString();
   dataStore.systemStatus.ollamaBot.status = 'active';
-  addToHistory('ollamaAnalysis', data);
 }
 
 // Getter functions for API endpoints
@@ -38,6 +35,10 @@ export function getCryptoPrices() {
 
 export function getCryptoNews() {
   return dataStore.cryptoNews;
+}
+
+export function getOllamaAnalysis() {
+  return dataStore.ollamaAnalysis;
 }
 
 export function getAllData() {

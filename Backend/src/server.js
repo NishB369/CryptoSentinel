@@ -261,6 +261,8 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
+app.listen(port);
+
 // app.listen(port, () => {
 //   console.log(`🟢 Enhanced API server running at http://localhost:${port}`);
 //   console.log(`📊 Dashboard: http://localhost:${port}/dashboard`);
