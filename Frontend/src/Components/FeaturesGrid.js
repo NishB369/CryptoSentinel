@@ -28,7 +28,7 @@ const FeaturesGrid = () => {
   ];
 
   return (
-    <section className="p-10 bg-black">
+    <section className="p-10 bg-black" id="features">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">

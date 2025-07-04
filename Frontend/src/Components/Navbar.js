@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const scrollToSection = () => {
+  const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
