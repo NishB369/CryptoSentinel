@@ -16,9 +16,7 @@ machine.
 
 ## Demo
 
-<video src="https://github.com/NishB369/CryptoSentinel/raw/main/docs/demo.mp4" controls width="100%"></video>
-
-*90-second walkthrough — live price/news bots feeding the local Ollama analyst, and the selective-analysis flow returning a signal. ([direct link](https://github.com/NishB369/CryptoSentinel/raw/main/docs/demo.mp4) if the player doesn't load.)*
+▶ **[Watch the 90-second demo](https://github.com/NishB369/CryptoSentinel/raw/main/docs/demo.mp4)** — live price/news bots feeding the local Ollama analyst, and the selective-analysis flow returning a signal.
 
 ## Validated on ship
 
@@ -27,7 +25,7 @@ The mentor who ran the bootcamp reposted the build:
 > "By the end of the bootcamp you will become the next version of yourself if you keep working this way."
 > — **Janishar Ali**, Founder, AfterAcademy (ex-VP, PhysicsWallah)
 
-<img src="docs/validation.png" width="70%">
+<img src="docs/validation.png" width="440">
 
 ## What it is
 
