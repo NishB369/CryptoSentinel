@@ -16,9 +16,9 @@ machine.
 
 ## Demo
 
-https://github.com/NishB369/CryptoSentinel/raw/main/docs/demo.mp4
+<video src="https://github.com/NishB369/CryptoSentinel/raw/main/docs/demo.mp4" controls width="100%"></video>
 
-*90-second walkthrough — live price/news bots feeding the local Ollama analyst, and the selective-analysis flow returning a signal.*
+*90-second walkthrough — live price/news bots feeding the local Ollama analyst, and the selective-analysis flow returning a signal. ([direct link](https://github.com/NishB369/CryptoSentinel/raw/main/docs/demo.mp4) if the player doesn't load.)*
 
 ## Validated on ship
 
